@@ -23,8 +23,8 @@ body {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	height: 90dvh;
-	padding-top: 10dvh;
+	height: 95dvh;
+	padding-top: 5dvh;
 }
 
 .code {
