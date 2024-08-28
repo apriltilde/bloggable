@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Bloggable</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://unpkg.com/@sakun/system.css" />
+    <link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+    <div class="login-form">
+    <div class = "text">
+    <div class="standard-dialog center scale-down">
+      <h1 class="dialog-text" style = "font-size: 20px;">Bloggable. Version 1.0.0</h1>
+      <p class="dialog-text">&copy; 1984 April Computer</p>
+    </div>
+    </div>
+	<div class = "lefttext">
+		<h1>About</h1>
+		<p>Bloggable is a blog tool that works on any neocities website! Yes even free accounts.</p>
+		<p>If you would like to report a bug please send the report at <a href = "bug.php">this site.</a> (add your name if you want to be credited in bug reports)</a>
+		<h1>Features</h1>
+			<ul>
+				<li> infinite blog posts </li>
+				<li> WYSIWYG editing </li>
+				<li> easily customizable colour schemes (compatible with <a href= "https://www.realtimecolors.com/">this website</a>)</li>
+				<li> automatic image and gif hosting on catbox.moe </li>
+				<li> tags </li>
+			</ul>
+
+		<h1>Getting started</h1>
+		<p>You may use a fake domain to register with if you do not wish to use a real email address but this will make account recovery much harder.</p>
+		<p>Add your blog to your site with this code...</p>
+		<p class="code">&lt;iframe src='https://arpilmyroomim.neocities.org/embed/index.html?userId=<span class = "uid">example</span>'frameborder='none'&gt;&lt;/iframe&gt;</p>
+		<p>Go to <a href = "add.html">this page</a> to add blog posts.</p>
+	</div>
+    
+    <div class="window">
+      <div class="title-bar">
+        <button aria-label="Close" class="close"></button>
+        <h1 class="title">Register/Login</h1>
+        <button aria-label="Resize" class="resize"></button>
+      </div>
+      <div class="separator"></div>
+    
+      <div class="window-pane">
+        <form>
+             
+            <div class="form-group">
+			<label for="text_email">Email</label><br>
+ 			 <input id="text_email" type="email" placeholder="email@domain.com"/><br>
+
+            </div>
+            <div class="form-group">
+  <label for="text_pwd">Password</label><br>
+  <input id="text_pwd" type="password" placeholder="password"/><br><br>
+            </div>
+            <button type="submit" class="btn btn-primary">Login</button>
+        </form>
+      </div>
+      
+    </div>
+    </div>
+<script type = "module" src="script.js"></script>
+</body>
+</html>

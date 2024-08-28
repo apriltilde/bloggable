@@ -1,0 +1,105 @@
+::selection {
+    background-color: lightgray;
+    color: blue;	
+}
+
+body, html {
+    margin: 0;
+    height: 100dvh;
+    width: 100dvw;
+}
+
+body {
+    font-family: monospace;
+    height: 100dvh;
+    font-size: 11px;
+}
+
+.window {
+	overflow: visible;
+}
+
+.login-form {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	height: 90dvh;
+	padding-top: 10dvh;
+}
+
+.code {
+	text-align: center;
+	font-size: 9px;
+}
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    transition: background-color 5000s ease-in-out 0s;
+}
+
+li::marker {
+	content: '> \00a';
+}
+
+.lefttext {
+	float: left;
+	width: 30dvw;
+	background-color: #fff;
+	border: 2px solid;
+	padding: 10px;
+	overflow-wrap: break-word;
+}
+
+
+.emailtext {
+	font-size: 12px;
+	font-family: monospace;
+}
+
+
+.center {
+	display: flex;
+	width: 30dvw;
+	flex-direction: column;
+	align-items: center;
+	margin-bottom: 20px;
+	overflow-wrap: break-word;
+}
+
+
+.window-pane {
+	height: auto;
+	padding: 1rem 1rem;
+	
+}
+
+form {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+a {
+    -webkit-user-drag: none;
+}
+
+img {
+    display: block;
+    -webkit-user-drag: none;
+}
+
+@media only screen and (max-width: 400px) {
+	body {
+		font-size: 15px;
+	}
+	
+	.lefttext {
+		width: 80dvw;
+	}
+	
+	
+	.center {
+		width: 80dvw;
+	}
+}
