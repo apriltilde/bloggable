@@ -1,7 +1,7 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
- import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-analytics.js";
- import { getFirestore, collection, addDoc, setDoc, doc} from "https://www.gstatic.com/firebasejs/10.13/firebase-firestore.js";
- import { getAuth, onAuthStateChanged, setPersistence, signOut, browserLocalPersistence, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js"; 
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
+ import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-analytics.js";
+ import { getFirestore, collection, addDoc, setDoc, doc} from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
+ import { getAuth, onAuthStateChanged, setPersistence, signOut, browserLocalPersistence, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-auth.js"; 
  const firebaseConfig = {
    apiKey: "AIzaSyBXQJF2HKqIw4GpH1foV7rItLrsSOiSOoU",
    authDomain: "blogtool-d9e10.firebaseapp.com",
@@ -38,7 +38,6 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/fireba
     var toolbarOptions = [
         ['bold', 'italic', 'underline', 'strike'],
         ['blockquote', 'code-block'],
-        [{ 'header': 1 }, { 'header': 2 }],
         [{ 'list': 'ordered'}, { 'list': 'bullet' }],
         [{ 'script': 'sub'}, { 'script': 'super' }],
         [{ 'indent': '-1'}, { 'indent': '+1' }],
@@ -55,6 +54,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/fireba
     var quill = new Quill('#editor', {
         theme: 'snow',
         modules: {
+        	syntax: true,
             toolbar: toolbarOptions
         }
     });

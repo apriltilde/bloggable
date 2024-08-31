@@ -1,0 +1,21 @@
+.container {
+     width: 12%;
+     margin: 0 auto;
+     padding: 20px;
+     margin-top: 50px;
+}
+
+.section {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
+
+@media only screen and (max-width: 600px) {
+	.container {
+	     width: 80%;
+	     margin: 0 auto;
+	     padding: 20px;
+	     margin-top: 50px;
+	}
+}

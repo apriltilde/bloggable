@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://unpkg.com/@sakun/system.css">
+    <link rel="stylesheet" href="forms.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings Page</title>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="standard-dialog center scale-down">
+            <h1>Settings</h1>
+            <form>
+                <div class="form-group">
+                    <label>
+                        <input id="titles" type="checkbox" name="chbx-example">
+                        <label for="titles"></label>
+                        Enable post titles
+                    </label>
+                </div>
+
+                <div class="form-group">
+                    <label>
+                        <input id="dates" type="checkbox" name="chbx-example">
+                        <label for="dates"></label>
+                        Enable post dates
+                    </label>
+                </div>
+                <br>
+                <div class="form-group">
+                    <button type='button' class="btn">Save Settings</button>
+                </div>
+            </form>
+        </div>
+    </div>
+<script type="module" src = "saveset.js"></script>
+</body>
+
+</html>
