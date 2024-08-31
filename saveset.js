@@ -62,7 +62,18 @@ async function fetch(chatId) {
 function updateCheckbox(data) {
   // Iterate through all properties in the data object
   for (const [key, value] of Object.entries(data)) {
-    if (value === true) {
+    if (key === 'filext') {
+      // Find the input element with id 'file'
+      const fileInput = document.getElementById('file');
+
+      // If the input is found, set its value to the value of filext
+      if (fileInput) {
+        fileInput.value = value;
+        console.log(`Input with id "file" updated with value: ${value}`);
+      } else {
+        console.warn(`Input with id "file" not found.`);
+      }
+    } else if (value === true) {
       // Find the checkbox element by its ID (key)
       const checkbox = document.getElementById(key);
 
@@ -79,10 +90,15 @@ function updateCheckbox(data) {
 
 function getCheckboxStates() {
   const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+  const fileInput = document.getElementById('file');
   const data = {};
   checkboxes.forEach(checkbox => {
     data[checkbox.id] = checkbox.checked;
   });
+  if (fileInput) {
+    data.filext = fileInput.value;
+  }
+
   return data;
 }
 
@@ -103,3 +119,4 @@ document.querySelector('.btn').addEventListener('click', () => {
   const data = getCheckboxStates();
   updateFirestoreDocument(username, data);
 });
+
