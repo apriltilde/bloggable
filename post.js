@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
  import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-analytics.js";
- import { getFirestore, collection, addDoc, setDoc, doc} from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
+ import { getFirestore, collection, addDoc, setDoc, doc, getDoc} from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
  import { getAuth, onAuthStateChanged, setPersistence, signOut, browserLocalPersistence, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-auth.js"; 
  const firebaseConfig = {
    apiKey: "AIzaSyBXQJF2HKqIw4GpH1foV7rItLrsSOiSOoU",
@@ -186,7 +186,20 @@ async function saveHtmlContent(htmlContent, tags = '') {
 	        const userRef = await setDoc(doc(db, `blog/${username}/`), {
 	            userId: userId,
 	        })
+	    const settingsRef = doc(db, `blog/${username}/data/settings`);
 
+    // Check if the settings document exists
+    const settingsSnap = await getDoc(settingsRef);
+
+    if (!settingsSnap.exists()) {
+        // Add default settings if the document doesn't exist
+        await setDoc(settingsRef, {
+            dates: true,
+            filext: ".txt",
+            titles: true
+        });
+        console.log("Default settings added.");
+    }
 
 
 
