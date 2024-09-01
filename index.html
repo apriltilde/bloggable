@@ -31,14 +31,20 @@
 
 		<h1>Getting started</h1>
 		<p>You may use a fake domain to register with if you do not wish to use a real email address but this will make account recovery much harder.</p>
-		<p>Add your blog to your site with this code...</p>
+		<p>Add your blog to your site with this code where you want the chat to be...</p>
 		<p class="code">&lt;iframe src='https://arpilmyroomim.neocities.org/embed/index.html?userId=<span class = "uid">example</span>'frameborder='none'&gt;&lt;/iframe&gt;</p>
+		<p>Add this code after your closing body tag</p>
+		<p class="code">const iframe = document.querySelector('iframe');
+		iframe.onload = function() {
+		    iframe.contentWindow.postMessage({ cssUrl: 'https://yourdomain.com/styles.css' }, '*');
+		};</p>
+		<p>Replace your domain with your neocities url</p>
 		<p>Go to <a href = "add.html">this page</a> to add blog posts.</p>
 		<p>Go to <a href = "dash.html">this page</a> to edit or delete blog posts.</p>
 		<p>Go to <a href = "settings.html">this page</a> for settings.</p>
 
 		<h1>Changes and Updates </h1>
-		<p class = "latestupdate">Added settings page, will add more settings soon</p>
+		<p class = "latestupdate">Fix css styling not working</p>
 		<p>Read the update log <a href = "updates.html">here</a></p>
 	</div>
     

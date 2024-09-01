@@ -23,8 +23,10 @@ body {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	height: 95dvh;
-	padding-top: 5dvh;
+	height: 98dvh;
+	padding-top: 2dvh;
+	width: 100dvw;
+	overflow-x: hidden;
 }
 
 .code {
