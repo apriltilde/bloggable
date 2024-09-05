@@ -1,0 +1,136 @@
+:root {
+--text: #000000;
+--background: #FFEFEF;
+--primary: #F3D0D7;
+--secondary: #ffefef;
+--accent: #AA336A;
+--padding: 2dvh;	
+}
+
+h1,h2,h3,h4,h5,h6, p {
+    margin-block-start: 0em;
+    margin-block-end: 0em;
+    color:  var(--text);
+}
+
+html, body, {
+	min-height: 100dvh;
+	margin: 0;
+	padding: 0;
+	color: var(--text);
+}
+
+.container{
+	min-height: 96dvh;
+}
+
+hr {
+	text-align: center;
+	border-color: var(--primary);
+}
+
+a {
+    -webkit-user-drag: none;
+    color: var(--accent);
+}
+
+::selection {
+    background-color: var(--accent);
+}
+
+::-webkit-scrollbar {
+    display: none;
+}
+
+p {
+	margin-top: 2px;
+}
+
+#tags {
+	display: flex;
+	flex-direction: column;
+	margin-left: 10px;
+}
+
+.post {
+	background: var(--background);
+	border-radius: 2px;
+	word-wrap: break-word;
+	margin: 4px;
+	padding: var(--padding);
+}
+
+.metadata {
+	display: flex;
+	color: grey;
+	opacity: 0.8;
+	flex-direction: row-reverse;
+    justify-content: space-between;
+}
+
+.title {
+	font-size: 13px;
+	background: var(--primary);
+	width: fit-content;
+	margin-bottom: 10px;
+}
+
+img {
+    -webkit-user-drag: none;
+}
+
+pre {
+	white-space: pre-wrap;
+	background-color: #23241f;
+    color: #f8f8f2;
+    margin-bottom: 5px;
+    border-radius: 3px;
+    margin-top: 5px;
+    padding: 5px 10px;
+}
+
+#postcontainer {
+	display: flex;
+	flex-direction: column;
+}
+
+body {
+    font-family: monospace;
+    background-color: var(--background);
+        color:  var(--text);
+    margin: 0;
+    padding: 0;
+}
+.container {
+    display: flex;
+    justify-content: center;
+    padding: var(--padding);
+}
+.main {
+    background-color: var(--primary);
+    padding: var(--padding);
+    max-width: 40dvw;
+    flex: 1;
+}
+
+.fix {
+	position: fixed;
+	text-align: center;
+	width: 200px;
+	background-color: var(--secondary);
+}
+.sidebar {
+    width: 200px;    
+    background-color: var(--secondary);
+    padding: var(--padding);
+}
+
+@media only screen and (max-width: 768px) {
+    .sidebar {
+        display: none;
+    }
+
+    .main {
+        max-width: 93dvw;
+    }
+}
