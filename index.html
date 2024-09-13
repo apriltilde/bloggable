@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+#<!DOCTYPE html>
 <html>
 <head>
     <title>Bloggable</title>
@@ -10,7 +10,7 @@
     <div class="login-form">
     <div class = "text">
     <div class="standard-dialog center scale-down">
-      <h1 class="dialog-text" style = "font-size: 20px;">Bloggable. Version 1.0.2</h1>
+      <h1 class="dialog-text" style = "font-size: 20px;">Bloggable. Version 1.0.5</h1>
       <p class="dialog-text">&copy; 1984 April Computer</p>
     </div>
     </div>
@@ -34,17 +34,17 @@
 		<p>Add your blog to your site with this code where you want the chat to be...</p>
 		<p class="code">&lt;iframe src='https://arpilmyroomim.neocities.org/embed/index.html?userId=<span class = "uid">example</span>'frameborder='none'&gt;&lt;/iframe&gt;</p>
 		<p>Add this code after your closing body tag</p>
-		<p class="code">const iframe = document.querySelector('iframe');
+		<p class="code">&lt;script&gt; const iframe = document.querySelector('iframe');
 		iframe.onload = function() {
 		    iframe.contentWindow.postMessage({ cssUrl: 'https://yourdomain.com/styles.css' }, '*');
-		};</p>
+		};&lt;/script&gt;</p>
 		<p>Replace your domain with your neocities url</p>
 		<p>Go to <a href = "add.html">this page</a> to add blog posts.</p>
 		<p>Go to <a href = "dash.html">this page</a> to edit or delete blog posts.</p>
 		<p>Go to <a href = "settings.html">this page</a> for settings.</p>
 
 		<h1>Changes and Updates </h1>
-		<p class = "latestupdate">Fix css styling not working</p>
+		<p class = "latestupdate">Added themes</p>
 		<p>Read the update log <a href = "updates.html">here</a></p>
 	</div>
     
