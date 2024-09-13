@@ -176,6 +176,84 @@ async function fetch(chatId) {
       if (data.dates === false) {
         document.querySelectorAll('.metadata').forEach(el => el.style.display = 'none');
       }
+      if (data.theme === 'winxp') {
+
+        const stylesLink = document.querySelector('link[href="styles.css"]');
+        if (stylesLink) {
+          stylesLink.remove();
+        }
+
+        const xpLink = document.createElement('link');
+        xpLink.rel = 'stylesheet';
+        xpLink.href = 'https://unpkg.com/xp.css';
+        document.head.appendChild(xpLink);
+
+        const winLink = document.createElement('link');
+        winLink.rel = 'stylesheet';
+        winLink.href = 'win.css';
+        document.head.appendChild(winLink);
+        
+        // Modify every post
+        const posts = document.querySelectorAll('.post');
+        posts.forEach(post => {
+          const title = post.querySelector('.title').textContent;
+          const content = post.innerHTML.replace(/<h1 class="title">.*?<\/h1>/, ''); // Remove the title
+          post.innerHTML = `
+            <div class="window">
+              <div class="title-bar">
+                <div class="title-bar-text">${title}</div>
+                <div class="title-bar-controls">
+                  <button aria-label="Minimize"></button>
+                  <button aria-label="Maximize"></button>
+                  <button aria-label="Close"></button>
+                </div>
+              </div>
+              <div class="window-body">
+                ${content}
+              </div>
+            </div>
+          `;
+        });
+      }
+      if (data.theme === 'win98') {
+      
+              const stylesLink = document.querySelector('link[href="styles.css"]');
+              if (stylesLink) {
+                stylesLink.remove();
+              }
+      
+              const xpLink = document.createElement('link');
+              xpLink.rel = 'stylesheet';
+              xpLink.href = 'https://unpkg.com/98.css';
+              document.head.appendChild(xpLink);
+      
+              const winLink = document.createElement('link');
+              winLink.rel = 'stylesheet';
+              winLink.href = 'win.css';
+              document.head.appendChild(winLink);
+              
+              // Modify every post
+              const posts = document.querySelectorAll('.post');
+              posts.forEach(post => {
+                const title = post.querySelector('.title').textContent;
+                const content = post.innerHTML.replace(/<h1 class="title">.*?<\/h1>/, ''); // Remove the title
+                post.innerHTML = `
+                  <div class="window">
+                    <div class="title-bar">
+                      <div class="title-bar-text">${title}</div>
+                      <div class="title-bar-controls">
+                        <button aria-label="Minimize"></button>
+                        <button aria-label="Maximize"></button>
+                        <button aria-label="Close"></button>
+                      </div>
+                    </div>
+                    <div class="window-body">
+                      ${content}
+                    </div>
+                  </div>
+                `;
+              });
+            }
     } else {
       console.log('No such document!');
     }

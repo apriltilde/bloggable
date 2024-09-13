@@ -46,7 +46,7 @@ async function fetch(chatId) {
 
     if (docSnap.exists()) {
       let data = docSnap.data();
-      delete data.userId; // Remove userId from the data
+      delete data.userId;
 
       console.log('Document data (excluding userId):', data);
       updateCheckbox(data);
@@ -84,19 +84,34 @@ function updateCheckbox(data) {
       } else {
         console.warn(`Checkbox with id "${key}" not found or is not a checkbox.`);
       }
-    }
+    }else if (key === 'theme') { // Add this block
+          // Find the select element with id 'mySelect'
+          const selectInput = document.getElementById('theme');
+    
+          // If the select is found, set its value to the value of selectedOption
+          if (selectInput) {
+            selectInput.value = value;
+            console.log(`Select with id "mySelect" updated with value: ${value}`);
+          } else {
+            console.warn(`Select with id "mySelect" not found.`);
+          }
+        }
   }
 }
 
 function getCheckboxStates() {
   const checkboxes = document.querySelectorAll('input[type="checkbox"]');
   const fileInput = document.getElementById('file');
+  const selectInput = document.getElementById('theme');
   const data = {};
   checkboxes.forEach(checkbox => {
     data[checkbox.id] = checkbox.checked;
   });
   if (fileInput) {
     data.filext = fileInput.value;
+  }
+  if (selectInput) {
+    data.theme = selectInput.value;
   }
 
   return data;
@@ -119,4 +134,5 @@ document.querySelector('.btn').addEventListener('click', () => {
   const data = getCheckboxStates();
   updateFirestoreDocument(username, data);
 });
+
 
