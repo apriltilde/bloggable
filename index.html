@@ -10,44 +10,45 @@
     <div class="login-form">
     <div class = "text">
     <div class="standard-dialog center scale-down">
-      <h1 class="dialog-text" style = "font-size: 20px;">Bloggable. Version 1.0.5</h1>
+      <h1 class="dialog-text" style = "font-size: 20px;">Bloggable. Version 1.1.0</h1>
       <p class="dialog-text">&copy; 1984 April Computer</p>
     </div>
     </div>
-	<div class = "lefttext">
-		<h1>About</h1>
-		<p>Bloggable is a blog tool that works on any neocities website! Yes even free accounts.</p>
-		<p>If you would like to report a bug please send the report at <a href = "bug.php">this site.</a> (add your name if you want to be credited in bug reports)</a>
-		<p>For suggesting features please do so on the github repo.</p>
-		<p>Github repo: <a href = "https://github.com/apriltilde/bloggable">bloggable</a>
-		<h1>Features</h1>
-			<ul>
-				<li> infinite blog posts </li>
-				<li> WYSIWYG editing </li>
-				<li> easily customizable colour schemes (compatible with <a href= "https://www.realtimecolors.com/">this website</a>)</li>
-				<li> automatic image and gif hosting on catbox.moe </li>
-				<li> tags </li>
-			</ul>
+        <div class = "lefttext">
+                <h1>About</h1>
+                <p>Bloggable is a blog tool that works on any neocities website! Yes even free accounts.</p>
+                <p>If you would like to report a bug please send the report at <a href = "bug.php">this site.</a> (add your name if you want to be credited in bug reports)</a>
+                <p>For suggesting features please do so on the github repo.</p>
+                <p>Github repo: <a href = "https://github.com/apriltilde/bloggable">bloggable</a>
+                <h1>Features</h1>
+                        <ul>
+                                <li> infinite blog posts </li>
+                                <li> WYSIWYG editing </li>
+                                <li> easily customizable colour schemes (compatible with <a href= "https://www.realtimecolors.com/">this website</a>)</li>
+                                <li> automatic image and gif hosting on catbox.moe </li>
+                                <li> tags </li>
+                        </ul>
 
-		<h1>Getting started</h1>
-		<p>You may use a fake domain to register with if you do not wish to use a real email address but this will make account recovery much harder.</p>
-		<p>Add your blog to your site with this code where you want the chat to be...</p>
-		<p class="code">&lt;iframe src='https://arpilmyroomim.neocities.org/embed/index.html?userId=<span class = "uid">example</span>'frameborder='none'&gt;&lt;/iframe&gt;</p>
-		<p>Add this code after your closing body tag</p>
-		<p class="code">&lt;script&gt; const iframe = document.querySelector('iframe');
-		iframe.onload = function() {
-		    iframe.contentWindow.postMessage({ cssUrl: 'https://yourdomain.com/styles.css' }, '*');
-		};&lt;/script&gt;</p>
-		<p>Replace your domain with your neocities url</p>
-		<p>Go to <a href = "add.html">this page</a> to add blog posts.</p>
-		<p>Go to <a href = "dash.html">this page</a> to edit or delete blog posts.</p>
-		<p>Go to <a href = "settings.html">this page</a> for settings.</p>
+                <h1>Getting started</h1>
+                <p>You may use a fake domain to register with if you do not wish to use a real email address but this will make account recovery much harder.</p>
+                <p>Add your blog to your site with this code where you want the blog to be...</p>
+                <li>tumblr style blog:</li><p class="code">&lt;iframe src='https://arpilmyroomim.neocities.org/embed/index.html?userId=<span class = "uid">example</span>'frameborder='none'&gt;&lt;/iframe&gt;</p>
+                <li>zonelets style blog:</li><p class="code">&lt;iframe src='https://arpilmyroomim.neocities.org/embed/post/postlist?userId=<span class = "uid">example</span>'frameborder='none'&gt;&lt;/iframe&gt;</p>
+                <p>Add this code after your closing body tag</p>
+                <p class="code">&lt;script&gt; const iframe = document.querySelector('iframe');
+                iframe.onload = function() {
+                    iframe.contentWindow.postMessage({ cssUrl: 'https://yourdomain.com/styles.css' }, '*');
+                };&lt;/script&gt;</p>
+                <p>Replace your domain with your neocities url</p>
+                <p>Go to <a href = "add.html">this page</a> to add blog posts.</p>
+                <p>Go to <a href = "dash.html">this page</a> to edit or delete blog posts.</p>
+                <p>Go to <a href = "settings.html">this page</a> for settings.</p>
 
-		<h1>Changes and Updates </h1>
-		<p class = "latestupdate">Added themes</p>
-		<p>Read the update log <a href = "updates.html">here</a></p>
-	</div>
-    
+                <h1>Changes and Updates </h1>
+                <p class = "latestupdate">Zonelets style blog</p>
+                <p>Read the update log <a href = "updates.html">here</a></p>
+        </div>
+
     <div class="window">
       <div class="title-bar">
         <button aria-label="Close" class="close"></button>
@@ -55,13 +56,13 @@
         <button aria-label="Resize" class="resize"></button>
       </div>
       <div class="separator"></div>
-    
+
       <div class="window-pane">
         <form>
-             
+
             <div class="form-group">
-			<label for="text_email">Email</label><br>
- 			 <input id="text_email" type="email" placeholder="email@domain.com"/><br>
+                        <label for="text_email">Email</label><br>
+                         <input id="text_email" type="email" placeholder="email@domain.com"/><br>
 
             </div>
             <div class="form-group">
@@ -71,7 +72,7 @@
             <button type="submit" class="btn btn-primary">Login</button>
         </form>
       </div>
-      
+
     </div>
     </div>
 <script type = "module" src="script.js"></script>

@@ -1,6 +1,6 @@
 // Import the Firebase SDK
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
-import { getFirestore, collection, query, where, getDocs, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
+import { getFirestore, collection, query, where, getDocs, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -117,7 +117,7 @@ function extractAndDisplayTags() {
     var tagsDiv = document.getElementById("tags");
 
     // Clear previous tags
-    tagsDiv.innerHTML = "";
+    tagsDiv.innerHTML = "<br>";
 
     // Create and append links for each tag
     tagsSet.forEach(function(tag) {
