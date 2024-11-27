@@ -1,1 +1,1 @@
-<a href = "https://april.lexiqqq.com/bloggable/">bloggable site</a>
+<a href = "https://tilde.club/~april/bloggable/">bloggable site</a>
