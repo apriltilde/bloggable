@@ -1,7 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-analytics.js";
 import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
-import { getAuth, onAuthStateChanged, setPersistence, signOut, browserLocalPersistence, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-auth.js";
+import { getAuth, initializeAuth, onAuthStateChanged, setPersistence, signOut, browserLocalPersistence, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-auth.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBXQJF2HKqIw4GpH1foV7rItLrsSOiSOoU",
@@ -20,7 +20,7 @@ const firebaseConfig = {
   const auth = getAuth(app);
 
 
-      onAuthStateChanged(auth, (user) => {
+ onAuthStateChanged(auth, (user) => {
       if (user) {
         globalThis.user = auth.currentUser;
         let email = user.email;
@@ -29,10 +29,10 @@ const firebaseConfig = {
         crypto.subtle.digest('SHA-256', passwordBytes).then(function(hashBuffer) {
         	let big = Array.prototype.map.call(new Uint8Array(hashBuffer), x => ('00' + x.toString(16)).slice(-2)).join('');
         	globalThis.username = big.substring(0, 6);
-        	const uidSpan = document.querySelector('.uid');
-            if (uidSpan) {
-                uidSpan.textContent = globalThis.username;
-            }
+			const uidSpans = document.querySelectorAll('.uid');
+			uidSpans.forEach(uidSpan => {
+			    uidSpan.textContent = globalThis.username;
+			});
         });
       } else {
       }

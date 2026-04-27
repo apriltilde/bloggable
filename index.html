@@ -10,46 +10,11 @@
     <div class="login-form">
     <div class = "text">
     <div class="standard-dialog center scale-down">
-      <h1 class="dialog-text" style = "font-size: 20px;">Bloggable. Version 1.1.0</h1>
+      <h1 class="dialog-text" style = "font-size: 20px;">Bloggable. Version 2.0.0</h1>
       <p class="dialog-text">&copy; 1984 April Computer</p>
     </div>
     </div>
-        <div class = "lefttext">
-                <h1>About</h1>
-                <p>Bloggable is a blog tool that works on any neocities website! Yes even free accounts.</p>
-                <p>If you would like to report a bug please send the report at <a href = "bug.php">this site.</a> (add your name if you want to be credited in bug reports)</a>
-                <p>For suggesting features please do so on the github repo.</p>
-                <p>Github repo: <a href = "https://github.com/apriltilde/bloggable">bloggable</a>
-                <h1>Features</h1>
-                        <ul>
-                                <li> infinite blog posts </li>
-                                <li> WYSIWYG editing </li>
-                                <li> easily customizable colour schemes (compatible with <a href= "https://www.realtimecolors.com/">this website</a>)</li>
-                                <li> automatic image and gif hosting on catbox.moe </li>
-                                <li> tags </li>
-                        </ul>
-
-                <h1>Getting started</h1>
-                <p>You may use a fake domain to register with if you do not wish to use a real email address but this will make account recovery much harder.</p>
-                <p>Add your blog to your site with this code where you want the blog to be...</p>
-                <li>tumblr style blog:</li><p class="code">&lt;iframe src='https://arpilmyroomim.neocities.org/embed/index.html?userId=<span class = "uid">example</span>'frameborder='none'&gt;&lt;/iframe&gt;</p>
-                <li>zonelets style blog:</li><p class="code">&lt;iframe src='https://arpilmyroomim.neocities.org/embed/post/postlist?userId=<span class = "uid">example</span>'frameborder='none'&gt;&lt;/iframe&gt;</p>
-                <p>Add this code after your closing body tag</p>
-                <p class="code">&lt;script&gt; const iframe = document.querySelector('iframe');
-                iframe.onload = function() {
-                    iframe.contentWindow.postMessage({ cssUrl: 'https://yourdomain.com/styles.css' }, '*');
-                };&lt;/script&gt;</p>
-                <p>Replace your domain with your neocities url</p>
-                <p>Go to <a href = "add.html">this page</a> to add blog posts.</p>
-                <p>Go to <a href = "dash.html">this page</a> to edit or delete blog posts.</p>
-                <p>Go to <a href = "settings.html">this page</a> for settings.</p>
-
-                <h1>Changes and Updates </h1>
-                <p class = "latestupdate">Zonelets style blog</p>
-                <p>Read the update log <a href = "updates.html">here</a></p>
-        </div>
-
-    <div class="window">
+<div class="window" id="window1">
       <div class="title-bar">
         <button aria-label="Close" class="close"></button>
         <h1 class="title">Register/Login</h1>
@@ -62,19 +27,64 @@
 
             <div class="form-group">
                         <label for="text_email">Email</label><br>
-                         <input id="text_email" type="email" placeholder="email@domain.com"/><br>
+                         <input id="text_email" type="email" placeholder="email@domain.com"><br>
 
             </div>
             <div class="form-group">
   <label for="text_pwd">Password</label><br>
-  <input id="text_pwd" type="password" placeholder="password"/><br><br>
+  <input id="text_pwd" type="password" placeholder="password"><br><br>
             </div>
             <button type="submit" class="btn btn-primary">Login</button>
         </form>
       </div>
+	
+    </div>
+    
+        <div class = "lefttext">
+                <h1>About</h1>
+                <p>I hate static site generators they are so annoying and all you really want at the end of the day 
+                is just a simple blog that you dont have to go into the weeds editing html every time you
+                just want to write something simple. To this end bloggable! Its as tumblr esque
+                while still letting you edit whatever you would like. It works on free accounts so no worrying about
+                cross site origin hotlinking something whatever errors it should just work... hopefully!</p>
+                <p>Github repo: <a href = "https://github.com/apriltilde/bloggable">bloggable</a>
+                <h1>Features</h1>
+                        <ul>
+                                <li> infinite blog posts </li>
+                                <li> WYSIWYG editing </li>
+                                <li> your posts formated and messed with however you like</li>
+                                <li> automatic image and gif hosting on catbox.moe </li>
+                                <li> tags </li>
+                        </ul>
 
+                <h1>Getting started</h1>
+                <p>You need to make an account to start, use the register/login box to make and login to your account.
+                You may use a fake domain to register with if you do not wish to use a real email address but this will make account recovery much harder (please try to remember
+                your password).</p>
+                <p>Download the tumblr <a href = "template.html" download>template.html</a> file or the zonelets
+                <a href="zoneletstemplate.html" download>template.html</a> and put it in your neocities
+                <p>Where it says change to your iframe link here replace the iframe tag with the tag automatically generated below (will be an example userId until you log in or sign up)</p>
+                <p class="code">&lt;iframe src='https://arpilmyroomim.neocities.org/embed/index.html?userId=<span class = "uid">example</span>'frameborder='none'&gt;&lt;/iframe&gt;</p>
+
+				<p>I would reccomend either writing your own or downloading a template css file to make the blog look nicer there is a 
+				tumblr style css file <a href="greystyle.css" download="">style.css</a> and a zonelets style css file <a href="zonelets.css" download="">style.css</a>
+				remember to rename these files to styles.css when you add them to your neocities.
+           		<h1>Adding and editing posts</h1>
+                <p>Go to <a href = "add.html">this page</a> to add blog posts.</p>
+                <p>Go to <a href = "dash.html">this page</a> to edit or delete blog posts.</p>
+
+                <p>I would appreciate if when using this blog you linked back to my website on your site as this shows me who is using bloggable. Also if you click the link on your site it shows me who uses bloggable which is nice.
+                <br>
+                <br>	<a href="https://tilde.club/~april">https://tilde.club/~april</a><br>
+
+                <h1>Making changes</h1>
+                <p>From here its just normal css and js. feel free to change the template code or write your own! Use the tag
+                #pinned to pin a post</p>
+        </div>
+
+	
     </div>
-    </div>
+
 <script type = "module" src="script.js"></script>
 </body>
 </html>

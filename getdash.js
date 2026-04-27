@@ -1,7 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
  import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-analytics.js";
  import { getFirestore, collection, addDoc, setDoc, getDocs,deleteDoc, doc} from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
- import { getAuth, onAuthStateChanged, setPersistence, signOut, browserLocalPersistence, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.13/firebase-auth.js"; 
+ import { getAuth, onAuthStateChanged, setPersistence, signOut, browserLocalPersistence, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-auth.js"; 
  const firebaseConfig = {
    apiKey: "AIzaSyBXQJF2HKqIw4GpH1foV7rItLrsSOiSOoU",
    authDomain: "blogtool-d9e10.firebaseapp.com",
@@ -47,6 +47,21 @@ async function fetchPosts(chatId) {
     });
 
     console.log('Posts:', postsList);
+    postsList.sort((a, b) => {
+      const aPinned = a.tags?.includes("#pinned") ? 1 : 0;
+      const bPinned = b.tags?.includes("#pinned") ? 1 : 0;
+
+      // If one is pinned and the other isn't
+      if (aPinned !== bPinned) {
+        return bPinned - aPinned; // pinned goes first
+      }
+
+      // Otherwise sort by date (newest first)
+      const aTime = a.createdAt?.toMillis?.() || 0;
+      const bTime = b.createdAt?.toMillis?.() || 0;
+
+      return bTime - aTime;
+    });
     createPostsTable(postsList);
 
   } catch (error) {
@@ -54,93 +69,105 @@ async function fetchPosts(chatId) {
   }
 }
 
+function getPostSize(post) {
+  const jsonString = JSON.stringify(post);
+  return new Blob([jsonString]).size;
+}
+
+function formatSize(bytes) {
+  if (bytes < 1024) return bytes + ' B';
+  if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+  return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+}
+
 function createPostsTable(posts) {
   const tableContainer = document.getElementById('postsTableContainer');
 
-  // Create a table element
-  const table = document.createElement('table');
-  table.classList.add('standard-dialog', 'center', 'scale-down');
-  // Create table headers
-  const thead = document.createElement('thead');
-  const headerRow = document.createElement('tr');
-  const headers = ['Filename', 'Date', 'Tags', 'Actions'];
+  const flexTable = document.createElement('div');
+  flexTable.classList.add('flex-table');
 
-  headers.forEach(headerText => {
-    const th = document.createElement('th');
-    th.textContent = headerText;
-    headerRow.appendChild(th);
+  // Header
+  const headerRow = document.createElement('div');
+  headerRow.classList.add('flex-row', 'header');
+
+  const headers = ['filename', 'size', 'date', 'actions'];
+
+  headers.forEach(text => {
+    const cell = document.createElement('div');
+    cell.classList.add('flex-cell');
+    cell.textContent = text;
+    headerRow.appendChild(cell);
   });
-  thead.appendChild(headerRow);
-  table.appendChild(thead);
 
-  // Create table body and populate it with posts data
-  const tbody = document.createElement('tbody');
+  flexTable.appendChild(headerRow);
+
+  // Rows
   posts.forEach(post => {
-    const row = document.createElement('tr');
+    const row = document.createElement('div');
+    row.classList.add('flex-row');
 
-    // Create and append cells for each post property
-    const idCell = document.createElement('td');
-    idCell.textContent = post.id;
-    idCell.style.textAlign = 'left';
-    row.appendChild(idCell);
+    // Filename
+    const filenameCell = document.createElement('div');
+    filenameCell.classList.add('flex-cell');
+    filenameCell.textContent = post.id;
+    row.appendChild(filenameCell);
 
-    const titleCell = document.createElement('td');
-titleCell.textContent = post.createdAt 
-        ? new Date(post.createdAt.seconds * 1000).toLocaleString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false }) 
-        : 'N/A';
-        row.appendChild(titleCell);
+    // Size (formatted bytes)
+    const sizeCell = document.createElement('div');
+    sizeCell.classList.add('flex-cell');
 
+    const sizeInBytes = getPostSize(post);
+    sizeCell.textContent = formatSize(sizeInBytes);
 
-    const contentCell = document.createElement('td');
-    contentCell.textContent = post.tags || 'N/A'; // Default to 'No content' if content is missing
-    row.appendChild(contentCell);
+    row.appendChild(sizeCell);
 
-    const actionsCell = document.createElement('td');
-    const deleteButton = document.createElement('button');
-    deleteButton.textContent = 'X';
-    deleteButton.style.backgroundColor = 'white';
-    deleteButton.style.color = 'black';
-    deleteButton.style.border = 'none';
-    deleteButton.style.cursor = 'pointer';
-    deleteButton.style.padding = '5px 10px';
-    deleteButton.style.borderRadius = '3px';
-    deleteButton.addEventListener('click', () => {
+    // Date
+    const dateCell = document.createElement('div');
+    dateCell.classList.add('flex-cell');
+    dateCell.textContent = post.createdAt
+      ? new Date(post.createdAt.seconds * 1000).toLocaleDateString('en-GB')
+      : 'N/A';
+    row.appendChild(dateCell);
+
+    // Actions
+    const actionsCell = document.createElement('div');
+    actionsCell.classList.add('flex-cell');
+
+    // Delete (p)
+    const deleteP = document.createElement('p');
+    deleteP.textContent = 'X';
+    deleteP.style.cursor = 'pointer';
+    deleteP.style.display = 'inline';
+    deleteP.style.marginRight = '10px';
+
+    deleteP.addEventListener('click', () => {
       if (confirm('Are you sure you wish to delete this file?')) {
         deletePost(post.id);
       }
     });
-    actionsCell.appendChild(deleteButton);
 
-        const editButton = document.createElement('button');
-    editButton.textContent = '✎';
-    editButton.style.backgroundColor = 'white';
-    editButton.style.color = 'black';
-    editButton.style.border = 'none';
-    editButton.style.cursor = 'pointer';
-    editButton.style.padding = '5px 10px';
-    editButton.style.borderRadius = '3px';
+    // Edit (p)
+    const editP = document.createElement('p');
+    editP.textContent = '✎';
+    editP.style.cursor = 'pointer';
+    editP.style.display = 'inline';
 
-    // Add click event listener for edit button
-    editButton.addEventListener('click', () => {
-      // Save content to local storage
+    editP.addEventListener('click', () => {
       saveContentToLocalStorage(post.id, post.tags, post.htmlContent);
-      // Redirect to add.html
       window.location.href = 'add.html';
     });
-    actionsCell.appendChild(editButton);
-    row.appendChild(actionsCell);
-    tbody.appendChild(row);
 
-   
+    actionsCell.appendChild(deleteP);
+    actionsCell.appendChild(editP);
+
+    row.appendChild(actionsCell);
+
+    flexTable.appendChild(row);
   });
 
-  table.appendChild(tbody);
-
-  // Clear any existing content in the container and append the new table
   tableContainer.innerHTML = '';
-  tableContainer.appendChild(table);
+  tableContainer.appendChild(flexTable);
 }
-
 
 function saveContentToLocalStorage(postId, title, content) {
 	const fileName = postId.replace(/\.html$/, '');

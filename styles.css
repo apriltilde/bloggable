@@ -15,8 +15,17 @@ body {
     font-size: 11px;
 }
 
-.window {
+#window1 {
 	overflow: visible;
+    	position: absolute;
+    	right: 10dvh;
+}
+
+#window2 {
+	overflow: visible;
+	position: absolute;
+	left: 5dvh;
+	top: 30dvh;
 }
 
 .login-form {
@@ -91,7 +100,7 @@ img {
     -webkit-user-drag: none;
 }
 
-@media only screen and (max-width: 400px) {
+@media only screen and (max-width: 800px) {
 	body {
 		font-size: 15px;
 	}
@@ -103,5 +112,9 @@ img {
 	
 	.center {
 		width: 80dvw;
+		margin-bottom: 0px;
+	}
+	.window, #window1, #window2 {
+		position: initial;
 	}
 }

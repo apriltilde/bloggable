@@ -51,13 +51,14 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/fireba
     ];
 
     // Initialize Quill with toolbar options
-    var quill = new Quill('#editor', {
-        theme: 'snow',
-        modules: {
-        	syntax: true,
-            toolbar: toolbarOptions
-        }
-    });
+var quill = new Quill('#editor', {
+    theme: 'snow',
+    modules: {
+        syntax: true,
+        toolbar: toolbarOptions
+    }
+});
+
     
 // Save content to local storage whenever Quill editor or textareas change
 quill.on('text-change', saveContentToLocalStorage);

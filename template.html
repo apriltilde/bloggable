@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>My blog</title>
+  <link rel="stylesheet" type="text/css" href="styles.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    iframe {
+      display: none;
+    }
+  </style>
+  
+</head>
+<body>
+  <!-- change to your iframe link here -->
+  <iframe 
+    src="https://arpilmyroomim.neocities.org/embed/index.html?userId=9ccc6f"
+    frameborder="none">
+  </iframe>
+  <!--change to your iframe link here -->
+
+  <div id="postcontainer">Loading...</div>
+
+  <script>
+    window.addEventListener("message", (event) => {
+      if (event.origin !== "https://arpilmyroomim.neocities.org") return;
+    
+      if (event.data && event.data.type === "POSTS_DATA") {
+        const posts = event.data.posts;
+    
+        const sortedPosts = [...posts].sort((a, b) => {
+          const aPinned = a.tags?.includes("pinned");
+          const bPinned = b.tags?.includes("pinned");
+    
+          if (aPinned && !bPinned) return -1;
+          if (!aPinned && bPinned) return 1;
+    
+          return new Date(b.postDate) - new Date(a.postDate);
+        });
+    
+        console.log("Received posts:", sortedPosts);
+        displayPosts(sortedPosts);
+      }
+    });
+
+    function formatTags(tags) {
+      if (!tags) return "";
+
+      if (Array.isArray(tags)) {
+        return tags.join(", ");
+      }
+
+      if (typeof tags === "string") {
+        return tags;
+      }
+
+      return "";
+    }
+
+    function displayPosts(posts) {
+      const container = document.getElementById("postcontainer");
+
+      if (!posts || posts.length === 0) {
+        container.textContent = "No posts found";
+        return;
+      }
+      
+
+      container.innerHTML = posts.map(post => `
+        <div class="post">
+          <h2>${post.title}</h2>
+
+
+          <div class="content">
+            ${post.htmlContent || ""}
+          </div>
+          
+          <div class="date">
+            ${post.postDate ? new Date(post.postDate).toLocaleString() : ""}
+          </div>
+
+          <div class="tags">
+            ${formatTags(post.tags)}
+          </div>
+        </div>
+      `).join("");
+    }
+  </script>
+</body>
+</html>

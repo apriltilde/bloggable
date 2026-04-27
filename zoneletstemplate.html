@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>My blog</title>
+  <link rel="stylesheet" type="text/css" href="styles.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    iframe {
+      display: none;
+    }
+  </style>
+  
+</head>
+<body>
+  <!-- change to your iframe link here -->
+  <iframe 
+    src="https://arpilmyroomim.neocities.org/embed/index.html?userId=9ccc6f"
+    frameborder="none">
+  </iframe>
+  <!--change to your iframe link here -->
+  <div>
+  <h2> lipsum blipsum title ispsum</h2>
+  </div>
+  <div class = "text">
+  <hr>
+  <div class = "textstuff">
+    <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco yes you should write here </p>
+  </div>
+    <hr>
+  </div>
+  <div id="postcontainer">Loading...
+  </div>
+  <div class = "footer">
+  <p> <a href= "https://tilde.club/~april/bloggable/">Bloggable</a> by <a href = "https://tilde.club/~april/">april</a></p>
+  </div>
+
+<script>
+  function getPostFromURL() {
+    const params = new URLSearchParams(window.location.search);
+    return params.get("post");
+  }
+
+  window.addEventListener("message", (event) => {
+    if (event.origin !== "https://arpilmyroomim.neocities.org") return;
+
+    if (event.data && event.data.type === "POSTS_DATA") {
+      const posts = event.data.posts;
+
+      const sortedPosts = [...posts].sort((a, b) => {
+        const aPinned = a.tags?.includes("pinned");
+        const bPinned = b.tags?.includes("pinned");
+
+        if (aPinned && !bPinned) return -1;
+        if (!aPinned && bPinned) return 1;
+
+        return new Date(b.postDate) - new Date(a.postDate);
+      });
+
+      const selectedPost = getPostFromURL();
+
+      if (selectedPost) {
+        displaySinglePost(sortedPosts, selectedPost);
+      } else {
+        displayPostList(sortedPosts);
+      }
+    }
+  });
+
+  function displayPostList(posts) {
+    const container = document.getElementById("postcontainer");
+  
+    container.innerHTML = posts.map(post => {
+      const isPinned = post.tags?.includes("pinned");
+  
+      const label = isPinned
+        ? "Pinned post"
+        : (post.postDate
+            ? new Date(post.postDate).toLocaleDateString("en-GB", {
+                day: "2-digit",
+                month: "short",
+                year: "numeric"
+              })
+            : "");
+  
+      return `
+        <div class="post-link">
+          <span class="date">${label}</span>
+          —
+          <a href="?post=${encodeURIComponent(post.title)}">
+            ${post.title}
+          </a>
+        </div>
+      `;
+    }).join("");
+  }
+  
+  
+  function displaySinglePost(posts, title) {
+    const container = document.getElementById("postcontainer");
+
+    const post = posts.find(p => p.title === title);
+
+    if (!post) {
+      container.textContent = "Post not found";
+      return;
+    }
+
+    container.innerHTML = `
+      <div class="post">
+        <h2>${post.title}</h2>
+
+        <div class="content">
+          ${post.htmlContent || ""}
+        </div>
+
+        <div class="date">
+          ${post.postDate ? new Date(post.postDate).toLocaleString() : ""}
+        </div>
+
+        <div class="tags">
+          ${formatTags(post.tags)}
+        </div>
+
+        <br>
+        <a href="?">← Index</a>
+      </div>
+    `;
+  }
+
+  function formatTags(tags) {
+    if (!tags) return "";
+
+    if (Array.isArray(tags)) {
+      return tags.join(", ");
+    }
+
+    if (typeof tags === "string") {
+      return tags;
+    }
+
+    return "";
+  }
+</script>
+</body>
+</html>
