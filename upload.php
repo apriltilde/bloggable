@@ -1,45 +1,88 @@
 <?php
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $urls = [];
+header('Content-Type: application/json');
 
-    // Enable error reporting for debugging
-    ini_set('display_errors', 1);
-    ini_set('display_startup_errors', 1);
-    error_reporting(E_ALL);
+$apiKey = "6d207e02198a847aa98d0a2a901485a5";
 
-    if (isset($_FILES['fileToUpload']) && is_array($_FILES['fileToUpload']['tmp_name'])) {
-        foreach ($_FILES['fileToUpload']['tmp_name'] as $index => $tmpName) {
-            if (!is_uploaded_file($tmpName)) {
-                echo json_encode(['error' => 'Failed to upload file']);
-                exit;
-            }
-
-            // Move the file to a temporary location
-            $uploadFilePath = tempnam(sys_get_temp_dir(), 'upload_') . '.jpg';
-            move_uploaded_file($tmpName, $uploadFilePath);
-
-            // Prepare the curl command
-            $command = "curl -F 'reqtype=fileupload' -F 'fileToUpload=@{$uploadFilePath}' https://catbox.moe/user/api.php";
-
-            // Execute the command and capture the output
-            $response = shell_exec($command);
-
-            // Remove the temporary file
-            unlink($uploadFilePath);
-
-            if ($response) {
-                $urls[] = trim($response);
-            } else {
-                echo json_encode(['error' => 'Failed to receive a response from Catbox.moe']);
-                exit;
-            }
-        }
-
-        // Return the URLs as JSON
-        echo json_encode(['urls' => $urls]);
-    } else {
-        echo json_encode(['error' => 'No files provided for upload']);
-    }
-} else {
-    echo json_encode(['error' => 'Invalid request method']);
+if (!isset($_FILES['fileToUpload'])) {
+    echo json_encode([
+        'error' => 'No file received',
+        'files' => $_FILES
+    ]);
+    exit;
 }
+
+$files = $_FILES['fileToUpload'];
+
+$urls = [];
+$debug = [];
+
+$ch = curl_init("https://freeimage.host/api/1/upload");
+
+curl_setopt_array($ch, [
+    CURLOPT_RETURNTRANSFER => true,
+    CURLOPT_POST => true,
+]);
+
+for ($i = 0; $i < count($files['tmp_name']); $i++) {
+
+    $tmpName = $files['tmp_name'][$i];
+
+    // 🔴 Check upload validity
+    if (empty($tmpName) || !is_uploaded_file($tmpName)) {
+        $debug[] = [
+            "index" => $i,
+            "error" => "Invalid or missing uploaded file",
+            "tmp_name" => $tmpName,
+            "name" => $files['name'][$i] ?? null
+        ];
+        continue;
+    }
+
+    curl_setopt($ch, CURLOPT_POSTFIELDS, [
+        "key" => $apiKey,
+        "source" => new CURLFile(
+            $tmpName,
+            $files['type'][$i] ?? "image/jpeg",
+            $files['name'][$i] ?? "upload.jpg"
+        )
+    ]);
+
+    $response = curl_exec($ch);
+
+    // 🔴 CURL error
+    if ($response === false) {
+        $debug[] = [
+            "index" => $i,
+            "curl_error" => curl_error($ch)
+        ];
+        continue;
+    }
+
+    $data = json_decode($response, true);
+
+    // 🔴 API error response
+    if (!isset($data['image']['url'])) {
+        $debug[] = [
+            "index" => $i,
+            "error" => "Upload failed",
+            "raw_response" => $data
+        ];
+        continue;
+    }
+
+    $urls[] = $data['image']['url'];
+
+    $debug[] = [
+        "index" => $i,
+        "success" => true,
+        "url" => $data['image']['url']
+    ];
+}
+
+curl_close($ch);
+
+// 🔥 Final response with full debug info
+echo json_encode([
+    "urls" => $urls,
+    "debug" => $debug
+], JSON_PRETTY_PRINT);

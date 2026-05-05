@@ -45,18 +45,46 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/fireba
         [{ 'size': ['small', false, 'large', 'huge'] }],
         [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
         [{ 'color': [] }, { 'background': [] }],
-        [{ 'font': [] }],
         ['link', 'image'],
         ['clean']
     ];
 
     // Initialize Quill with toolbar options
-var quill = new Quill('#editor', {
-    theme: 'snow',
-    modules: {
-        syntax: true,
-        toolbar: toolbarOptions
-    }
+const quill = new Quill("#editor", {
+  theme: "snow",
+  modules: {
+  	syntax: true,
+    toolbar: toolbarOptions,
+    imageDrop: true,
+    resize: {
+      // set embed tags to capture resize
+      embedTags: ["VIDEO", "IFRAME"],
+      // custom toolbar
+      tools: [
+        "left",
+        "center",
+        "right",
+        "full",
+        "edit",
+        {
+          text: "Alt",
+          attrs: {
+            title: "Set image alt",
+            class: "btn-alt",
+          },
+          verify(activeEle) {
+            return activeEle && activeEle.tagName === "IMG";
+          },
+          handler(evt, button, activeEle) {
+            let alt = activeEle.alt || "";
+            alt = window.prompt("Alt for image", alt);
+            if (alt == null) return;
+            activeEle.setAttribute("alt", alt);
+          },
+        },
+      ],
+    },
+  },
 });
 
     
@@ -128,36 +156,57 @@ window.addEventListener('load', function() {
         uploadImagesAndProcessHTML(htmlContent)
     });
 
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 
 async function uploadImagesAndProcessHTML(htmlContent) {
     const dataUrlRegex = /data:(image\/\w+);base64,([A-Za-z0-9+/=]+)/g;
     let match;
+
     const formData = new FormData();
 
+    function resizeImage(base64Data, maxWidth = 1200, quality = 0.8) {
+        return new Promise((resolve) => {
+            const img = new Image();
+
+            img.onload = () => {
+                const canvas = document.createElement("canvas");
+                const ctx = canvas.getContext("2d");
+
+                let width = img.width;
+                let height = img.height;
+
+                if (width > maxWidth) {
+                    height = Math.round((height * maxWidth) / width);
+                    width = maxWidth;
+                }
+
+                canvas.width = width;
+                canvas.height = height;
+
+                ctx.drawImage(img, 0, 0, width, height);
+
+                canvas.toBlob((blob) => resolve(blob), "image/jpeg", quality);
+            };
+
+            img.src = "data:image/jpeg;base64," + base64Data;
+        });
+    }
+
+    let fileIndex = 0;
+
     while ((match = dataUrlRegex.exec(htmlContent)) !== null) {
-        const imageType = match[1];
         const base64Data = match[2];
+        const blob = await resizeImage(base64Data, 1200, 0.8);
 
-        // Decode the base64 string to binary data
-        const byteString = atob(base64Data);
-        const arrayBuffer = new ArrayBuffer(byteString.length);
-        const uint8Array = new Uint8Array(arrayBuffer);
-
-        for (let i = 0; i < byteString.length; i++) {
-            uint8Array[i] = byteString.charCodeAt(i);
-        }
-
-        // Create a Blob from the binary data and specify it as a .jpg file
-        const blob = new Blob([uint8Array], { type: `image/jpeg` });
-
-        // Append the blob to formData with the appropriate file name
-        formData.append('fileToUpload[]', blob, `image${formData.length + 1}.jpg`);
+        formData.append("fileToUpload[]", blob, `image${fileIndex++}.jpg`);
     }
 
     try {
-        // Await the PHP backend to resolve
-        const response = await fetch('upload.php', {
-            method: 'POST',
+        const response = await fetch("upload.php", {
+            method: "POST",
             body: formData
         });
 
@@ -167,21 +216,16 @@ async function uploadImagesAndProcessHTML(htmlContent) {
 
         const data = await response.json();
 
-        // Process the returned URLs
         let index = 0;
         htmlContent = htmlContent.replace(dataUrlRegex, () => data.urls[index++]);
-        
     } catch (error) {
-        console.error('Fetch error:', error);
+        console.error("Fetch error:", error);
     }
+
     saveHtmlContent(htmlContent, tags);
 }
 
 
-
-
-    
-    
 async function saveHtmlContent(htmlContent, tags = '') {
 	        const userId = user.uid;
 	        const userRef = await setDoc(doc(db, `blog/${username}/`), {
