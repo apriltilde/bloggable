@@ -55,7 +55,7 @@ li::marker {
 
 .lefttext {
 	float: left;
-	width: 30dvw;
+	width: 35dvw;
 	background-color: #fff;
 	border: 2px solid;
 	padding: 10px;
@@ -71,7 +71,7 @@ li::marker {
 
 .center {
 	display: flex;
-	width: 30dvw;
+	width: 35dvw;
 	flex-direction: column;
 	align-items: center;
 	margin-bottom: 20px;

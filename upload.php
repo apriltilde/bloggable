@@ -27,7 +27,6 @@ for ($i = 0; $i < count($files['tmp_name']); $i++) {
 
     $tmpName = $files['tmp_name'][$i];
 
-    // 🔴 Check upload validity
     if (empty($tmpName) || !is_uploaded_file($tmpName)) {
         $debug[] = [
             "index" => $i,
@@ -49,7 +48,6 @@ for ($i = 0; $i < count($files['tmp_name']); $i++) {
 
     $response = curl_exec($ch);
 
-    // 🔴 CURL error
     if ($response === false) {
         $debug[] = [
             "index" => $i,
@@ -81,7 +79,6 @@ for ($i = 0; $i < count($files['tmp_name']); $i++) {
 
 curl_close($ch);
 
-// 🔥 Final response with full debug info
 echo json_encode([
     "urls" => $urls,
     "debug" => $debug

@@ -5,9 +5,16 @@
   <title>My blog</title>
   <link rel="stylesheet" type="text/css" href="styles.css">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="highlight.js"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css" rel="stylesheet">
   <style>
     iframe {
       display: none;
+    }
+    pre {
+      overflow-x: auto;
+      white-space: pre-wrap;
+      overflow-wrap: break-word;
     }
   </style>
   
@@ -31,9 +38,31 @@
   </div>
   <div id="postcontainer">Loading...
   </div>
+  
+
   <div class = "footer">
-  <p> <a href= "https://tilde.club/~april/bloggable/">Bloggable</a> by <a href = "https://tilde.club/~april/">april</a></p>
+  <a style="margin: 0" href="#" onclick="openAskBox()">askbox</a>
+  <p style ="margin: 0"> <a href= "https://tilde.club/~april/bloggable/">Bloggable</a> by <a href = "https://tilde.club/~april/">april</a></p>
   </div>
+  
+  
+<div id="askModal" class="modal">
+  <div class="modal-content">
+  <div class = "titlebar">
+    <span style = "position: relative; top: -9px;">Ask Box</span>
+    <span class="close" onclick="closeAskBox()">&times;</span>
+  </div>
+
+    <form id="askForm">
+      <input type="text" name="username" placeholder="Username" required>
+      <br><br>
+      <textarea name="message" placeholder="Message" required></textarea>
+      <br><br>
+      <button type="submit">Send</button>
+    </form>
+  </div>
+</div>
+
 
 <script>
   function getPostFromURL() {
@@ -141,6 +170,58 @@
 
     return "";
   }
+  
+  
+  function openAskBox() {
+      document.getElementById("askModal").style.display = "block";
+  }
+
+  function closeAskBox() {
+      document.getElementById("askModal").style.display = "none";
+  }
+
+  // close when clicking outside the box
+  window.onclick = function(event) {
+    const modal = document.getElementById("askModal");
+    if (event.target === modal) {
+      modal.style.display = "none";
+    }
+  }
+  
+  
+const form = document.getElementById("askForm");
+
+form.addEventListener("submit", function (e) {
+  e.preventDefault(); // stop page reload
+
+  const username = form.username.value.trim() || "anon";
+  const message = form.message.value.trim();
+
+  if (!message) return;
+
+  const iframe = document.querySelector("iframe");
+
+  if (!iframe) {
+    console.error("No iframe found");
+    return;
+  }
+
+  iframe.contentWindow.postMessage(
+    {
+      type: "ASK_FUNCTION",
+      payload: {
+        username,
+        message
+      }
+    },
+    "*"
+  );
+
+  // optional UX reset
+  form.message.value = "";
+});
+  
 </script>
 </body>
 </html>
+

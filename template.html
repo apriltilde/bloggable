@@ -6,9 +6,14 @@
   <link rel="stylesheet" type="text/css" href="styles.css">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
-    iframe {
+  iframe {
       display: none;
     }
+  pre {
+    overflow-x: auto;
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+  }
   </style>
   
 </head>
@@ -19,8 +24,32 @@
     frameborder="none">
   </iframe>
   <!--change to your iframe link here -->
+  <div style = "width: 40dvw;" class = "title">
+  <p style = "text-align: center;">Blog Title</p>
+  <a style="width: 100%; display: block; margin: 0; text-align: center;" href="#" onclick="openAskBox()">askbox</a>
+
+  
+  <hr>
+  </div>
 
   <div id="postcontainer">Loading...</div>
+  
+<div id="askModal" class="modal">
+  <div class="modal-content">
+  <div class = "titlebar">
+    <span style = "position: relative; top: -9px;">Ask Box</span>
+    <span class="close" onclick="closeAskBox()">&times;</span>
+  </div>
+
+    <form id="askForm">
+      <input type="text" name="username" placeholder="Username" required>
+      <br><br>
+      <textarea name="message" placeholder="Message" required></textarea>
+      <br><br>
+      <button type="submit">Send</button>
+    </form>
+  </div>
+</div>
 
   <script>
     window.addEventListener("message", (event) => {
@@ -86,6 +115,56 @@
         </div>
       `).join("");
     }
+    
+  function openAskBox() {
+      document.getElementById("askModal").style.display = "block";
+  }
+
+  function closeAskBox() {
+      document.getElementById("askModal").style.display = "none";
+  }
+
+  // close when clicking outside the box
+  window.onclick = function(event) {
+    const modal = document.getElementById("askModal");
+    if (event.target === modal) {
+      modal.style.display = "none";
+    }
+  }
+  
+  
+const form = document.getElementById("askForm");
+
+form.addEventListener("submit", function (e) {
+  e.preventDefault(); // stop page reload
+
+  const username = form.username.value.trim() || "anon";
+  const message = form.message.value.trim();
+
+  if (!message) return;
+
+  const iframe = document.querySelector("iframe");
+
+  if (!iframe) {
+    console.error("No iframe found");
+    return;
+  }
+
+  iframe.contentWindow.postMessage(
+    {
+      type: "ASK_FUNCTION",
+      payload: {
+        username,
+        message
+      }
+    },
+    "*"
+  );
+
+  // optional UX reset
+  form.message.value = "";
+});
   </script>
 </body>
 </html>
+

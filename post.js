@@ -104,6 +104,26 @@ function saveContentToLocalStorage() {
     localStorage.setItem('tags', tags);
 }
 
+window.addEventListener('load', function () {
+    var savedUsername = localStorage.getItem('askUsername');
+    var savedMessage = localStorage.getItem('askMessage');
+
+    // username → title input
+    if (savedUsername) {
+        document.querySelector('textarea[name="name"]').value = savedUsername + " asks";
+    }
+
+    // message → Quill quote block
+    if (savedMessage) {
+        const cleanMessage = savedMessage.replace(/^\s+/, '');
+
+        // wrap in blockquote HTML
+        const quoteHTML = `<blockquote>${cleanMessage}</blockquote><br>`;
+
+        quill.root.innerHTML = quoteHTML;
+    }
+});
+
 // Retrieve and set the content from local storage when the page loads
 window.addEventListener('load', function() {
     var savedContent = localStorage.getItem('quillEditorContent');
@@ -222,6 +242,37 @@ async function uploadImagesAndProcessHTML(htmlContent) {
         console.error("Fetch error:", error);
     }
 
+    for (let i = 1; i <= 8; i++) {
+        const padding = i * 3.5; // 3.5em increments
+        const regex = new RegExp(`class="([^"]*?)ql-indent-${i}([^"]*?)"`, "g");
+    
+        htmlContent = htmlContent.replace(regex, (match, before, after) => {
+            const cleanedClass = `${before} ${after}`.trim();
+    
+            if (cleanedClass) {
+                return `class="${cleanedClass}" style="padding-left: ${padding}em;"`;
+            }
+    
+            return `style="padding-left: ${padding}em;"`;
+        });
+    }
+    
+    // Replace Quill size classes with inline font sizes
+    htmlContent = htmlContent.replace(
+        /class="ql-size-small"/g,
+        'style="font-size: 0.75em;"'
+    );
+    
+    htmlContent = htmlContent.replace(
+        /class="ql-size-large"/g,
+        'style="font-size: 1.5em;"'
+    );
+    
+    htmlContent = htmlContent.replace(
+        /class="ql-size-huge"/g,
+        'style="font-size: 2.5em;"'
+    );
+
     saveHtmlContent(htmlContent, tags);
 }
 
@@ -256,6 +307,18 @@ async function saveHtmlContent(htmlContent, tags = '') {
 	    const metadata = `<!-- Original Post Date: ${new Date().toISOString()} -->\n`;
 	    const metadataWithTags = `${metadata}<!-- Tags: ${tags} -->\n`;
 	    const htmlContentWithMetadata = metadataWithTags + htmlContent;
+
+		const sizeInBytes = new Blob([htmlContentWithMetadata]).size;
+		const maxSize = 125 * 1024; // 125 KB
+		console.log(sizeInBytes);
+
+		if (sizeInBytes > maxSize) {
+		    const currentSizeKB = (sizeInBytes / 1024).toFixed(2);
+
+		    alert(`Post size too large (${currentSizeKB}KB/125KB)`);
+		    return;
+		}
+	    
 	    if (user) {	        
 	        const docRef = await setDoc(doc(db, `blog/${username}/posts/`, `${filename}`), {
 	            htmlContent: htmlContentWithMetadata,
@@ -266,6 +329,8 @@ async function saveHtmlContent(htmlContent, tags = '') {
 	    localStorage.removeItem('quillEditorContent');
 	    localStorage.removeItem('fileName');
         localStorage.removeItem('tags');
+        localStorage.removeItem('askUsername');
+        localStorage.removeItem('askMessage');
 	    document.querySelector('textarea[name="tags"]').value = '';
 	    document.querySelector('textarea[name="name"]').value = '';
 	   	}

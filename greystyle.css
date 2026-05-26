@@ -25,8 +25,9 @@ html, body {
     display: flex;
     width: 100dvw;
     justify-content: center;
+    flex-direction: column;
+    align-items: center;
 }
-
 #postcontainer {
     width: 40dvw;
 }
@@ -55,10 +56,65 @@ img {
     height: auto;
 }
 
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+/* Centered modal box */
+.modal-content {
+  color: black;
+  background: #ffffff;
+  width: 300px;
+  padding: 20px;
+  border: 1px black solid;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* Close button (X) */
+.close {
+  float: right;
+  cursor: pointer;
+  font-size: 20px;
+  position: relative;
+  top: -15px;
+}
+
+.modal-content .titlebar {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.modal-content textarea {
+height: 150px; 
+}
+
+/* Form inputs */
+.modal-content input,
+.modal-content textarea,
+.modal-content button {
+  max-width: 100%;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+
+
 
 @media (max-width: 800px) {
     #postcontainer {
         width: 100dvw;
     }
 }
+
 

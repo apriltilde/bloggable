@@ -30,8 +30,20 @@ html, body {
 
 .footer {
   display: flex;
-  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0;
+  margin-top: 20px;
 }
+
+blockquote {
+  border-left: 4px solid #ccc;
+  margin-bottom: 5px;
+  margin-top: 5px;
+  padding-left: 16px;
+}
+
 
 .textstuff {
     margin: 10px;
@@ -63,10 +75,63 @@ hr {
     width: 100%; 
 }
 
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+/* Centered modal box */
+.modal-content {
+  background: #ffffff;
+  width: 300px;
+  padding: 20px;
+  border: 1px black solid;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* Close button (X) */
+.close {
+  float: right;
+  cursor: pointer;
+  font-size: 20px;
+  position: relative;
+  top: -15px;
+}
+
+.modal-content .titlebar {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.modal-content textarea {
+height: 150px; 
+}
+
+/* Form inputs */
+.modal-content input,
+.modal-content textarea,
+.modal-content button {
+  max-width: 100%;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+
 
 @media (max-width: 800px) {
     #postcontainer, .text, .footer {
         width: 100dvw;
     }
 }
+
 
