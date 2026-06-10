@@ -33,6 +33,10 @@ const firebaseConfig = {
 			uidSpans.forEach(uidSpan => {
 			    uidSpan.textContent = globalThis.username;
 			});
+			const emailspan = document.querySelectorAll('.email');
+			emailspan.forEach(emailspan => {
+				emailspan.textContent = email;
+			});
         });
       } else {
       }

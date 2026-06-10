@@ -145,6 +145,8 @@ function saveAskToLocalStorage(username, message) {
 
     localStorage.setItem('askUsername', username || 'anon');
     localStorage.setItem('askMessage', cleanedMessage);
+    localStorage.removeItem('editflag');
+    //localStorage.setItem('date')
 
     console.log("Ask saved to localStorage:", {
         username,

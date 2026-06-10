@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://unpkg.com/@sakun/system.css" />
     <link rel="stylesheet" href="styles.css"/>
+    <meta name="referrer" content="no-referrer" />
+    <link rel="icon" type="image/x-icon" href="https://tilde.club/~april/imgs/blog.ico">
 </head>
 <body>
     <div class="login-form">
@@ -14,7 +16,7 @@
       <h1 class="dialog-text" style="font-size: 20px; margin:0;">Version 2.2.0</h1>
       <p class="dialog-text">&copy; 1984 April Computer</p>
     </div>
-    </div>
+    </div>	
 <div class="window" id="window1">
       <div class="title-bar">
         <button aria-label="Close" class="close"></button>
@@ -67,15 +69,17 @@
                 <p>Where it says change to your iframe link here replace the iframe tag with the tag automatically generated below (will be an example userId until you log in or sign up)</p>
                 <p class="code">&lt;iframe src='https://arpilmyroomim.neocities.org/embed/index.html?userId=<span class = "uid">example</span>'frameborder='none'&gt;&lt;/iframe&gt;</p>
 
-                <p style="font-weight: bold; text-align: center;">Your userId is <span class = "uid">NOACCOUNT </span> </p>
+                <p style="font-weight: bold; text-align: center;">Your userId is <span class = "uid">NO ACCOUNT </span> </p>
 
 				<p>I would reccomend either writing your own or downloading a template css file to make the blog look nicer there is a 
 				tumblr style css file <a href="greystyle.css" download="">style.css</a> and a zonelets style css file <a href="zonelets.css" download="">style.css</a>
 				remember to rename these files to styles.css when you add them to your neocities.
+				<div class = "show">
            		<h1>Adding and editing posts</h1>
                 <p>Go to <a href = "add.html">this page</a> to add blog posts.</p>
                 <p>Go to <a href = "dash.html">this page</a> to edit or delete blog posts.</p>
                 <p>Go to <a href = "asks.html">this page</a> to see your askbox.</p>
+                </div>
 
                 <p>I would appreciate if when using bloggable you kept the credits in or linked back to me in some way
 
@@ -87,6 +91,30 @@
                 <p>You may send me an email at april@tilde.club yeah ill probably respond! </p>
         </div>
 
+	
+    </div>
+<div class = "" style = "font-size: 13px; margin: 2px; background: white; position: absolute; top: 0; left: 0; border: 1px black solid;">
+	<span>Logged in as</span> <span class ="email">NO ACCOUNT</span> <span> with userId <span class = "uid">NO ACCOUNT</span>
+</div>
+<div class="window hide" id="window1" style="left: 50px; top: 50%; width: 200px;">
+      <div class="title-bar">
+        <button aria-label="Close" class="close"></button>
+        <h1 class="title">Blog Functions</h1>
+        <button aria-label="Resize" class="resize"></button>
+      </div>
+      <div class="separator"></div>
+
+      <div class="window-pane" style = "display: flex; flex-direction: column; gap: 10px;">
+      <center>
+		<a href = "add.html"> <button class="btn btn-primary func">Create post</button></a>
+	  </center>
+	  <center>
+		<a href="dash.html"> <button class="btn btn-primary func">Edit posts</button></a>
+	  </center>
+	  <center>
+		<a href="asks.html"> <button class="btn btn-primary func">View askbox</button></a>
+	  </center>
+      </div>
 	
     </div>
 

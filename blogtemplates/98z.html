@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>My blog</title>
+  <link rel="stylesheet" type="text/css" href="styles.css">
+  <link rel="stylesheet" href="https://unpkg.com/98.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="highlight.js"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css" rel="stylesheet">
+  <style>
+    body {
+      font-family: "Pixelated MS Sans Serif",Arial;
+    }
+    iframe {
+      display: none;
+    }
+    pre {
+      overflow-x: auto;
+      white-space: pre-wrap;
+      overflow-wrap: break-word;
+    }
+    body {
+      background-color: #008689; 
+    }
+  </style>
+  
+</head>
+<body>
+  <!-- change to your iframe link here -->
+  <iframe 
+    src="https://arpilmyroomim.neocities.org/embed/index.html?userId=a29943"
+    frameborder="none">
+  </iframe>
+  <!--change to your iframe link here -->
+  <div class="text window" style = "margin: 10px;" >
+  <div class="title-bar">
+    <div class="title-bar-text">Blog Title</div>
+  </div>
+  <div class="window-body">
+    <center><h3>Gucci mane truly love javascript html and css node js on top of that</h3></center>
+    <a style="width: 100%; display: block; margin: 0; text-align: center;" href="#" onclick="openAskBox()">askbox</a>
+  </div>
+</div>
+
+  <div id="postcontainer">Loading...
+  </div>
+  
+
+
+  <div class="text window" style = "margin: 10px;" >
+  <div class="title-bar">
+    <div class="title-bar-text">Footer</div>
+  </div>
+  <div class="window-body">
+    <center><a style="margin: 0" href="#" onclick="openAskBox()">askbox</a></center>
+    <center><p style ="margin: 0"> <a href= "https://tilde.club/~april/bloggable/">Bloggable</a> by <a href = "https://tilde.club/~april/">april</a></p></center>
+  </div>
+</div>
+  
+  
+<div id="askModal" class="modal">
+  <div class="modal-content window">
+  <div class = "titlebar title-bar">
+    <span class = "title-bar-text">Ask Box</span>
+    <div class="title-bar-controls">
+      <button onclick="closeAskBox()" aria-label="Close"></button>
+    </div>
+  </div>
+  <div class="window-body">
+    <form id="askForm">
+      <input type="text" autocomplete="off" name="username" placeholder="Username" required>
+      <br><br>
+      <textarea autocomplete="off" name="message" placeholder="Message" required></textarea>
+      <br><br>
+      <button type="submit">Send</button>
+    </form>
+  </div>
+  </div>
+</div>
+
+
+<script>
+  function getPostFromURL() {
+    const params = new URLSearchParams(window.location.search);
+    return params.get("post");
+  }
+
+  window.addEventListener("message", (event) => {
+    if (event.origin !== "https://arpilmyroomim.neocities.org") return;
+
+    if (event.data && event.data.type === "POSTS_DATA") {
+      const posts = event.data.posts;
+
+      const sortedPosts = [...posts].sort((a, b) => {
+        const aPinned = a.tags?.includes("pinned");
+        const bPinned = b.tags?.includes("pinned");
+
+        if (aPinned && !bPinned) return -1;
+        if (!aPinned && bPinned) return 1;
+
+        return new Date(b.postDate) - new Date(a.postDate);
+      });
+
+      const selectedPost = getPostFromURL();
+
+      if (selectedPost) {
+        displaySinglePost(sortedPosts, selectedPost);
+      } else {
+        displayPostList(sortedPosts);
+      }
+    }
+  });
+
+  function displayPostList(posts) {
+    const container = document.getElementById("postcontainer");
+  
+    const postList = posts.map(post => {
+      const isPinned = post.tags?.includes("pinned");
+  
+      const label = isPinned
+        ? "Pinned post"
+        : (post.postDate
+            ? new Date(post.postDate).toLocaleDateString("en-GB", {
+                day: "2-digit",
+                month: "short",
+                year: "numeric"
+              })
+            : "");
+  
+      return `
+        <div class="post-link">
+          <span class="date">${label}</span>
+          —
+          <a href="?post=${encodeURIComponent(post.title)}">
+            ${post.title}
+          </a>
+        </div>
+      `;
+    }).join("");
+  
+    container.innerHTML = `
+      <div class="window active">
+        <div class="title-bar">
+          <div class="title-bar-text">Posts</div>
+        </div>
+        <div class="window-body has-space">
+          ${postList}
+        </div>
+      </div>
+    `;
+  }
+  
+  
+  function displaySinglePost(posts, title) {
+    const container = document.getElementById("postcontainer");
+
+    const post = posts.find(p => p.title === title);
+
+    if (!post) {
+      container.textContent = "Post not found";
+      return;
+    }
+
+    container.innerHTML = `
+        <div style = "margin:0" class="post window">
+         <div class="title-bar">
+          <div class = "title-bar-text">${post.title}</div>
+              <div class="title-bar-controls">
+                <button aria-label="Minimize"></button>
+                <button aria-label="Maximize"></button>
+                <button aria-label="Close"></button>
+              </div>
+         </div>
+        <div class="window-body">
+          <div class="content">
+            ${post.htmlContent || ""}
+          </div>
+          
+          <div class="date">
+            ${post.postDate ? new Date(post.postDate).toLocaleString() : ""}
+          </div>
+
+          <div class="tags">
+            ${formatTags(post.tags)}
+          </div>
+        </div>
+        </div>
+    `;
+  }
+
+  function formatTags(tags) {
+    if (!tags) return "";
+
+    if (Array.isArray(tags)) {
+      return tags.join(", ");
+    }
+
+    if (typeof tags === "string") {
+      return tags;
+    }
+
+    return "";
+  }
+  
+  
+  function openAskBox() {
+      document.getElementById("askModal").style.display = "block";
+  }
+
+  function closeAskBox() {
+      document.getElementById("askModal").style.display = "none";
+  }
+
+  // close when clicking outside the box
+  window.onclick = function(event) {
+    const modal = document.getElementById("askModal");
+    if (event.target === modal) {
+      modal.style.display = "none";
+    }
+  }
+  
+  
+const form = document.getElementById("askForm");
+
+form.addEventListener("submit", function (e) {
+  e.preventDefault(); // stop page reload
+
+  const username = form.username.value.trim() || "anon";
+  const message = form.message.value.trim();
+
+  if (!message) return;
+
+  const iframe = document.querySelector("iframe");
+
+  if (!iframe) {
+    console.error("No iframe found");
+    return;
+  }
+
+  iframe.contentWindow.postMessage(
+    {
+      type: "ASK_FUNCTION",
+      payload: {
+        username,
+        message
+      }
+    },
+    "*"
+  );
+
+  // optional UX reset
+  form.message.value = "";
+});
+  
+</script>
+</body>
+</html>
+
+

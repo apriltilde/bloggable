@@ -153,7 +153,10 @@ function createPostsTable(posts) {
     editP.style.display = 'inline';
 
     editP.addEventListener('click', () => {
-      saveContentToLocalStorage(post.id, post.tags, post.htmlContent);
+    	console.log(post.createdAt);
+      var isodate = new Date(post.createdAt.seconds * 1000).toISOString()
+      console.log(isodate);
+      saveContentToLocalStorage(post.id, post.tags, post.htmlContent, isodate);
       window.location.href = 'add.html';
     });
 
@@ -169,13 +172,18 @@ function createPostsTable(posts) {
   tableContainer.appendChild(flexTable);
 }
 
-function saveContentToLocalStorage(postId, title, content) {
+function saveContentToLocalStorage(postId, title, content, postdate) {
 	const fileName = postId.replace(/\.html$/, '');
 	const contentWithoutComments = content.replace(/<!--[\s\S]*?-->/g, '').replace(/^\s+/, '');;
 	console.log(contentWithoutComments)
   localStorage.setItem('fileName', fileName);
   localStorage.setItem('tags', title);
   localStorage.setItem('quillEditorContent', contentWithoutComments);
+  localStorage.setItem('editflag', 1);
+  localStorage.setItem('postdate', postdate);
+  localStorage.removeItem('askMessage');
+  localStorage.removeItem('askUsername');
+  console.log("saved");
 }
 
 async function deletePost(postId) {

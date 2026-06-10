@@ -304,7 +304,18 @@ async function saveHtmlContent(htmlContent, tags = '') {
 	    alert("Filename required");
 	} else {
 		        // Add metadata to the HTML content
-	    const metadata = `<!-- Original Post Date: ${new Date().toISOString()} -->\n`;
+		const editFlag = localStorage.getItem('editflag');
+		
+		let createdAt;
+		
+		if (editFlag === '1') {
+		    const postDate = localStorage.getItem('postdate');
+		    createdAt = postDate ? new Date(postDate) : new Date();
+		} else {
+		    createdAt = new Date();
+		}
+		
+	    const metadata = `<!-- Original Post Date: ${createdAt} -->\n`;
 	    const metadataWithTags = `${metadata}<!-- Tags: ${tags} -->\n`;
 	    const htmlContentWithMetadata = metadataWithTags + htmlContent;
 
@@ -318,12 +329,12 @@ async function saveHtmlContent(htmlContent, tags = '') {
 		    alert(`Post size too large (${currentSizeKB}KB/125KB)`);
 		    return;
 		}
-	    
+	    console.log(createdAt);
 	    if (user) {	        
 	        const docRef = await setDoc(doc(db, `blog/${username}/posts/`, `${filename}`), {
 	            htmlContent: htmlContentWithMetadata,
 	            tags: tags,
-	            createdAt: new Date()
+	            createdAt: createdAt
 	        })
 	    quill.root.innerHTML = '';
 	    localStorage.removeItem('quillEditorContent');
@@ -331,6 +342,8 @@ async function saveHtmlContent(htmlContent, tags = '') {
         localStorage.removeItem('tags');
         localStorage.removeItem('askUsername');
         localStorage.removeItem('askMessage');
+        localStorage.removeItem('postdate');
+        localStorage.removeItem('editflag');
 	    document.querySelector('textarea[name="tags"]').value = '';
 	    document.querySelector('textarea[name="name"]').value = '';
 	   	}

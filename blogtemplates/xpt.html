@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>My blog</title>
+  <link rel="stylesheet" type="text/css" href="styles.css">
+  <link rel="stylesheet" href="https://unpkg.com/xp.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+  body {
+    font-family: "Pixelated MS Sans Serif",Arial;
+  }
+  iframe {
+      display: none;
+    }
+  pre {
+    overflow-x: auto;
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+  }
+    body {
+    background-image: url("win7.jpg");
+    background-size: cover;
+    background-position: center; 
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+  }
+  </style>
+  
+</head>
+<body>
+  <!-- change to your iframe link here -->
+  <iframe 
+    src="https://arpilmyroomim.neocities.org/embed/index.html?userId=a29943"
+    frameborder="none">
+  </iframe>
+  <!--change to your iframe link here -->
+  <div class="text window" style = "margin: 10px;" >
+  <div class="title-bar">
+    <div class="title-bar-text">Blog Title</div>
+  </div>
+  <div class="window-body">
+    <center><h3>Gucci mane truly love javascript html and css node js on top of that</h3></center>
+    <a style="width: 100%; display: block; margin: 0; text-align: center;" href="#" onclick="openAskBox()">askbox</a>
+  </div>
+</div>
+
+  <div id="postcontainer">Loading...</div>
+  
+<div id="askModal" class="modal">
+  <div class="modal-content window">
+  <div class = "titlebar title-bar">
+    <span class = "title-bar-text">Ask Box</span>
+    <div class="title-bar-controls">
+      <button onclick="closeAskBox()" aria-label="Close"></button>
+    </div>
+  </div>
+  <div class="window-body">
+    <form id="askForm">
+      <input type="text" autocomplete="off" name="username" placeholder="Username" required>
+      <br><br>
+      <textarea autocomplete="off" name="message" placeholder="Message" required></textarea>
+      <br><br>
+      <button type="submit">Send</button>
+    </form>
+  </div>
+  </div>
+</div>
+
+  <script>
+    window.addEventListener("message", (event) => {
+      if (event.origin !== "https://arpilmyroomim.neocities.org") return;
+    
+      if (event.data && event.data.type === "POSTS_DATA") {
+        const posts = event.data.posts;
+    
+        const sortedPosts = [...posts].sort((a, b) => {
+          const aPinned = a.tags?.includes("pinned");
+          const bPinned = b.tags?.includes("pinned");
+    
+          if (aPinned && !bPinned) return -1;
+          if (!aPinned && bPinned) return 1;
+    
+          return new Date(b.postDate) - new Date(a.postDate);
+        });
+    
+        console.log("Received posts:", sortedPosts);
+        displayPosts(sortedPosts);
+      }
+    });
+
+    function formatTags(tags) {
+      if (!tags) return "";
+
+      if (Array.isArray(tags)) {
+        return tags.join(", ");
+      }
+
+      if (typeof tags === "string") {
+        return tags;
+      }
+
+      return "";
+    }
+
+    function displayPosts(posts) {
+      const container = document.getElementById("postcontainer");
+
+      if (!posts || posts.length === 0) {
+        container.textContent = "No posts found";
+        return;
+      }
+      
+
+      container.innerHTML = posts.map(post => `
+      <div style = "margin:0; margin-bottom: 5px;" class="post window">
+         <div class="title-bar">
+          <div class = "title-bar-text">${post.title}</div>
+              <div class="title-bar-controls">
+                <button aria-label="Minimize"></button>
+                <button aria-label="Maximize"></button>
+                <button aria-label="Close"></button>
+              </div>
+         </div>
+        <div class="window-body">
+          <div class="content">
+            ${post.htmlContent || ""}
+          </div>
+          
+          <div class="date">
+            ${post.postDate ? new Date(post.postDate).toLocaleString() : ""}
+          </div>
+
+          <div class="tags">
+            ${formatTags(post.tags)}
+          </div>
+        </div>
+        </div>
+      `).join("");
+    }
+    
+  function openAskBox() {
+      document.getElementById("askModal").style.display = "block";
+  }
+
+  function closeAskBox() {
+      document.getElementById("askModal").style.display = "none";
+  }
+
+  // close when clicking outside the box
+  window.onclick = function(event) {
+    const modal = document.getElementById("askModal");
+    if (event.target === modal) {
+      modal.style.display = "none";
+    }
+  }
+  
+  
+const form = document.getElementById("askForm");
+
+form.addEventListener("submit", function (e) {
+  e.preventDefault(); // stop page reload
+
+  const username = form.username.value.trim() || "anon";
+  const message = form.message.value.trim();
+
+  if (!message) return;
+
+  const iframe = document.querySelector("iframe");
+
+  if (!iframe) {
+    console.error("No iframe found");
+    return;
+  }
+
+  iframe.contentWindow.postMessage(
+    {
+      type: "ASK_FUNCTION",
+      payload: {
+        username,
+        message
+      }
+    },
+    "*"
+  );
+
+  // optional UX reset
+  form.message.value = "";
+});
+  </script>
+</body>
+</html>
+
+
