@@ -1,10 +1,10 @@
 :root {
 --text: #000000;
---background: #FFEFEF;
---primary: #F3D0D7;
---secondary: #ffefef;
---accent: #AA336A;
---padding: 2dvh;	
+--background: #FFFFFF;
+--primary: #FFFFFF;
+--secondary: #FFFFFF;
+--accent: blue;
+--padding: 2dvh;    
 }
 
 h1,h2,h3,h4,h5,h6, p {
@@ -137,5 +137,8 @@ body {
 
     .main {
         max-width: 93dvw;
+    }
+    .post {
+        width: 80dvw;
     }
 }

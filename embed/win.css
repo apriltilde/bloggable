@@ -1,7 +1,26 @@
+:root {
+  /* Color */
+  --text-color: #222222;
+  --surface: #c0c0c0;
+  --button-highlight: #ffffff;
+  --button-face: #dfdfdf;
+  --button-shadow: #808080;
+  --window-frame: #0a0a0a;
+  --dialog-blue: #000080;
+  --dialog-blue-light: #1084d0;
+  --dialog-gray: #808080;
+  --dialog-gray-light: #b5b5b5;
+  --link-blue: #0000ff;
+}
+
+
+
 html, body {
 	min-height: 100dvh;
 	margin: 0;
 	padding: 0;
+	background-color: var(--surface);
+	font-family: "Pixelated MS Sans Serif"
 }
 
 .container{
@@ -10,6 +29,8 @@ html, body {
 
 a {
     -webkit-user-drag: none;
+	font-size: 15px;
+	color: var(--link-blue);
 }
 
 .metadata {
@@ -31,11 +52,18 @@ img {
 
 p {
     margin-block-end: 0em;
+    margin-block-start: 0em;
+	font-size: 15px;
+	color: var(--text-color);
+	font-weight: normal;
 }
 
 h1,h2,h3,h4,h5,h6 {
     margin-block-end: 0em;
     margin-block-start: 0em;
+	color: var(--text-color);
+	font-weight: normal;
+	font-size: 15px;
 }
 
 .window-body pre {
@@ -44,6 +72,8 @@ h1,h2,h3,h4,h5,h6 {
 
 pre {
     white-space: pre-wrap;
+	font-size: 12px;
+	color: var(--text-color);
 }
 
 #postcontainer {
@@ -56,24 +86,28 @@ pre {
     justify-content: center;
     padding: 20px;
     padding-bottom: 0;
+	background-color: var(--surface);
 }
 
 .fix {
-    position: fixed;
     text-align: center;
     width: 200px;
     background-color: var(--secondary);
 }
 
 .main {
-    max-width: 40dvw;
+	max-width: 40dvw;	
     flex: 1;
 }
 
 .sidebar {
     width: 200px;    
-    background-color: var(--secondary);
-    padding: var(--padding);
+	background: #fff;
+  	box-shadow: inset -1px -1px #fff,inset 1px 1px grey,inset -2px -2px #dfdfdf,inset 2px 2px #0a0a0a;
+	margin: 10px;
+ 	padding: 6px;
+	height: fit-content;
+	
 }
 
 @media only screen and (max-width: 768px) {

@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
-import { getFirestore, collection, query, getDocs } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
+import { getFirestore, collection, query, addDoc, doc, setDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
 
 const firebaseConfig = {
    apiKey: "AIzaSyBXQJF2HKqIw4GpH1foV7rItLrsSOiSOoU",
@@ -13,6 +13,18 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+
+fetch("https://tilde.club/~april/bloggable/data/data.php", {
+    method: "POST",
+    body: new URLSearchParams({
+        ref: document.referrer
+    })
+})
+.then(r => r.json())
+.then()
+.catch(console.error);
+
+
 
 async function loadPosts() {
     const urlParams = new URLSearchParams(window.location.search);
@@ -28,7 +40,7 @@ async function loadPosts() {
 
     const postContainer = document.getElementById("postcontainer");
 
-const CACHE_DURATION = 3 * 60 * 1000; // 3 minutes
+const CACHE_DURATION = 1 * 60 * 1000; // 1 minutes
 
 if (cached) {
     try {
@@ -62,6 +74,7 @@ if (cached) {
 
     try {
         const querySnapshot = await getDocs(q);
+        console.log("Posts from DB")
 
         if (querySnapshot.empty) {
             postContainer.textContent = "No posts found";
@@ -173,6 +186,43 @@ function filterPostsByTag(tag) {
                 : "none";
     });
 }
+
+export async function ask(message, username = "anon") {
+    if (!message || !message.trim()) {
+        console.error("Message is empty");
+        return;
+    }
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const chatId = urlParams.get("userId");
+
+    if (!chatId) {
+        console.error("userId not found in URL");
+        return;
+    }
+
+    try {
+        const messagesRef = collection(db, "asks", chatId, "messages");
+
+        await addDoc(messagesRef, {
+            username,
+            message,
+            createdAt: Date.now() 
+        });
+
+        console.log("Ask sent");
+    } catch (error) {
+        console.error("Error sending ask:", error);
+    }
+}
+
+window.addEventListener("message", (event) => {
+    if (event.data?.type !== "ASK_FUNCTION") return;
+
+    const { message, username } = event.data.payload || {};
+
+    ask(message, username);
+});
 
 // Toggle order
 document.getElementById("oldestfirst").addEventListener("click", (e) => {

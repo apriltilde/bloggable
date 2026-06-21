@@ -1,9 +1,9 @@
 :root {
 --text: #000000;
---background: #FFEFEF;
---primary: #F3D0D7;
---secondary: #ffefef;
---accent: #AA336A;
+--background: #FFFFFF;
+--primary: #FFFFFF;
+--secondary: #FFFFFF;
+--accent: blue;
 --padding: 2dvh;	
 }
 
@@ -81,8 +81,8 @@ img {
 
 pre {
 	white-space: pre-wrap;
-	background-color: #23241f;
-    color: #f8f8f2;
+	background-color: #000000;
+    color: #FFFFFF;
     margin-bottom: 5px;
     border-radius: 3px;
     margin-top: 5px;
