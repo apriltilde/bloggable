@@ -1,0 +1,94 @@
+
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .ql-snow .ql-picker.ql-font .ql-picker-label::before, .ql-snow .ql-picker.ql-font .ql-picker-item::before {
+            content: 'Geneva';
+        }
+
+        .ql-toolbar.ql-snow {
+            border: 1.5px solid #000;
+            border-bottom: none;
+            box-sizing: border-box;
+            font-family: Geneva;
+            padding: 8px;#
+            
+        }
+
+		.ql-container {
+		    font-family: Geneva;
+		    font-size: 13px;
+		    height: 100%;
+		    margin: 0px;
+		    position: relative;
+		}
+
+        
+        #editor-container {
+            width: 80%; /* Adjust as needed */
+            background: white;
+            max-width: 60dvw; /* Maximum width for the editor */
+            margin: auto; /* Center horizontally */
+        }
+
+        #editor {
+            min-height: 400px; /* Minimum height for the editor */
+            border: 1.5px solid #000;
+    		padding-left: 5px;
+        }
+
+        textarea[name="tags"] {
+            width: 100%;
+            border: 1px solid #ccc;
+            margin-top: 10px;
+            box-sizing: border-box;
+            resize: none;
+            border: 1.5px solid #000;
+            font-family: Chicago_12;
+    		padding-left: 5px;
+    		font-size: 18px;
+        }
+        textarea[name="name"] {
+            width: 100%;
+            border: 1px solid #ccc;
+            margin-top: 10px;
+            box-sizing: border-box;
+            resize: none;
+            border: 1.5px solid #000;
+            font-size: 18px;
+            font-family: Chicago_12;
+    		padding-left: 5px;
+        }
+
+        input {
+            border: 1px solid #ccc;
+            font-family: monospace;
+            padding: 8px;
+            box-sizing: border-box;
+            resize: none;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus,
+        button:focus {
+            outline: none;
+        }
+
+
+        /* Media query for smaller screens (e.g., mobile devices) */
+        @media only screen and (max-width: 600px) {
+            #editor-container {
+                width: 100dvw;
+                max-width: none;
+                margin: 5px;
+            }
+        }
+                input[type="file"] {
+            display: none; /* Hide the file input by default */
+        }

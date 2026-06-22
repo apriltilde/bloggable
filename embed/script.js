@@ -14,6 +14,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
+
 fetch("https://tilde.club/~april/bloggable/data/data.php", {
     method: "POST",
     body: new URLSearchParams({
@@ -23,8 +24,6 @@ fetch("https://tilde.club/~april/bloggable/data/data.php", {
 .then(r => r.json())
 .then()
 .catch(console.error);
-
-
 
 async function loadPosts() {
     const urlParams = new URLSearchParams(window.location.search);
@@ -133,58 +132,10 @@ function renderPosts(posts, postContainer) {
     }).join("");
 
     postContainer.innerHTML = html;
-
-    extractAndDisplayTags();
-
     window.parent.postMessage(
         { type: "POSTS_DATA", posts },
         "*"
     );
-}
-// Tag extraction (unchanged but slightly safer)
-function extractAndDisplayTags() {
-    const posts = document.querySelectorAll(".post");
-    const tagsSet = new Set();
-
-    posts.forEach(post => {
-        const tagsElement = post.querySelector(".tags");
-        if (!tagsElement) return;
-
-        tagsElement.textContent
-            .trim()
-            .split(" ")
-            .forEach(tag => {
-                if (tag) tagsSet.add(tag.trim());
-            });
-    });
-
-    const tagsDiv = document.getElementById("tags");
-    tagsDiv.innerHTML = "<br>";
-
-    tagsSet.forEach(tag => {
-        const a = document.createElement("a");
-        a.href = "#";
-        a.textContent = tag;
-        a.className = "tag-link";
-        a.onclick = () => filterPostsByTag(tag);
-
-        tagsDiv.appendChild(a);
-        tagsDiv.appendChild(document.createTextNode(" "));
-    });
-}
-
-function filterPostsByTag(tag) {
-    const posts = document.querySelectorAll(".post");
-
-    posts.forEach(post => {
-        const tagsText = post.querySelector(".tags")?.textContent || "";
-        const tags = tagsText.toLowerCase().split(" ");
-
-        post.style.display =
-            tags.includes(tag.toLowerCase()) || tag === ""
-                ? "block"
-                : "none";
-    });
 }
 
 export async function ask(message, username = "anon") {
@@ -224,32 +175,4 @@ window.addEventListener("message", (event) => {
     ask(message, username);
 });
 
-// Toggle order
-document.getElementById("oldestfirst").addEventListener("click", (e) => {
-    e.preventDefault();
-
-    const container = document.getElementById("postcontainer");
-    container.style.flexDirection =
-        container.style.flexDirection === "column-reverse"
-            ? "column"
-            : "column-reverse";
-});
-
-// CSS override listener
-window.addEventListener('message', (event) => {
-    if (!event.data.cssUrl) return;
-
-    const id = "dynamic-css";
-
-    document.getElementById(id)?.remove();
-
-    const link = document.createElement('link');
-    link.rel = 'stylesheet';
-    link.href = event.data.cssUrl;
-    link.id = id;
-
-    document.head.appendChild(link);
-});
-
-// Init
 window.onload = loadPosts;
